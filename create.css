@@ -1,0 +1,59 @@
+body{
+    background-color: #d9e0e7;
+    text-align: center;
+    font-family:Arial, Helvetica, sans-serif;
+    padding: 50px;
+    }
+    h1{
+        margin-bottom: 30px;
+        color: #333;
+        font-size: 28px;
+    }
+    main{
+        padding: 30px;
+        background: #fff;
+        max-width: 400px; 
+        border-radius: 8px;
+        margin:0 auto;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+label{
+    display: block;
+    text-align: left;
+    margin: 15px 0 5px;
+    font-weight: bold;
+}
+input[type="text"]{
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+
+button{
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    padding: 10px 20px;
+    margin: 20px 10px;
+    background-color:#1d12e9;
+    color: white;
+    border: none;
+    border-radius: 5px; /* It gives a curve shape on the edges*/
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover{
+    background-color: #111113;/* It chnages the color of the button when cursor is pointed*/
+}
+.actions {
+    margin-top: 20px;
+  }
+#status{
+    margin-top: 15px;
+    color: green;
+    font-weight: bold;
+}
