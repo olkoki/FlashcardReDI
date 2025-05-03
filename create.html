@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Flashcard</title>
+    <link rel="stylesheet" href="create.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <h1>Create a Flashcard</h1>  
+    <main>       
+        <label for question>Question:</label>
+        <input id="question" type="text" placeholder="Enter a question">
+        <label for answer>Answer:</label>
+        <input id="answer" type="text" placeholder="Enter a answer">
+        <button onclick="savecard()">Save</button>      
+        </main>
+
+        <button onclick="downloadcards()">Download</button>
+        <div id="status"></div>
+    <script src="create.js"></script>
+  </body>
+</html>
