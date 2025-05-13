@@ -11,10 +11,20 @@
   <body>
     <h1>Create a Flashcard</h1>  
     <main>       
-        <label for="question">Question:</label>
-        <input id="question" type="text" placeholder="Enter a question">
-        <label for="answer">Answer:</label>
-        <input id="answer" type="text" placeholder="Enter a answer">
+      <label for="question">Question:</label>
+      <input id="question" type="text" placeholder="Enter a question">
+      <label for="answer">Answer:</label>
+      <input id="answer" type="text" placeholder="Enter a answer">
+      <label for ="difficulty">Difficulty:</label>
+      <select id="difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+      <!-- Optional: Category -->
+<label for="category">Category:</label>
+<input id="category" type="text" placeholder="e.g. Math, Science">
+        
         <button onclick="savecard()">Save</button>      
         </main>
         <!-- Maybe we can add filters to the questions, like easy/medium/hard? or categories? If possible, maybe color code them?-->
