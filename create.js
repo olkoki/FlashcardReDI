@@ -32,3 +32,19 @@ function savecard() {
         document.getElementById("status").textContent = "File Downloaded successfully";
     },1000);
     }
+    }
+    function downloadcards() {
+    const cards=JSON.parse(localStorage.getItem("flashcards"));
+    const blob=new Blob([JSON.stringify (cards)],{type:"application/json"});
+    const url=URL.createObjectURL(blob);
+    
+    
+    const link =document.createElement("a");
+    link.href=url;
+    link.download="flashcards.json";
+    link.click();
+    URL.revokeObjectURL(url);
+    setTimeout(() =>{
+        document.getElementById("status").textContent = "File Downloaded successfully";
+    },1000);
+    }
