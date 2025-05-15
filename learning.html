@@ -130,6 +130,28 @@ img {
   height: auto;
 }
 
+.end-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.end-buttons button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #3b82f6;
+  color: white;
+  transition: background 0.2s ease;
+}
+
+.end-buttons button:hover {
+  background-color: #2563eb;
+}
+
 
   /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
 @media screen and (max-width: 768px) {
@@ -192,10 +214,12 @@ img {
   <div class="card" id="card">
     <div id="question" class="frontface"></div>
     <div id="answer" class="backface"></div>
+    <div id="end-message" class="hidden">
+      <p>🎉 You’ve reached the end of the deck!</p>
+    </div>
   </div>
 
   <div class="buttons-container">
-    <button id="flip-btn">Flip</button>
     <button id="mark-known">Learned!</button>
     <button id="mark-difficult">Still difficult</button>
   </div>
@@ -243,10 +267,12 @@ const cardElement = document.getElementById("card");
 const questionElement = document.getElementById("question");
 const answerElement = document.getElementById("answer");
 const nextButton = document.getElementById("next");
-const shuffleButton =document.getElementById("shuffle")
-const progressElement = document.getElementById("progress")
+const shuffleButton = document.getElementById("shuffle");
+const progressElement = document.getElementById("progress");
 const filterDifficulty = document.getElementById("filter-difficulty");
 const filterCategory = document.getElementById("filter-category");
+const markKnownButton = document.getElementById("mark-known"); // Moved here
+const markDifficultButton = document.getElementById("mark-difficult"); // Moved here
 
 //  Filter flashcards by difficulty and category
 function applyFilters() {
@@ -254,35 +280,65 @@ function applyFilters() {
     const category = filterCategory.value.trim().toLowerCase();
   
     filteredCards = allCards.filter(card => {
-      const matchesDifficulty = !difficulty || card.difficulty === difficulty;
-      const matchesCategory = !category || (card.category && card.category.toLowerCase().includes(category));
-      return matchesDifficulty && matchesCategory;
+        const matchesDifficulty = !difficulty || card.difficulty === difficulty;
+        const matchesCategory = !category || (card.category && card.category.toLowerCase().includes(category));
+        return matchesDifficulty && matchesCategory;
     });
-currentIndex = 0;
-showCard(currentIndex);
+
+    currentIndex = 0;
+    showCard(currentIndex);
+
+    // Ensure buttons are visible if there are cards
+    if (filteredCards.length > 0) {
+        markKnownButton.style.display = 'inline-block';
+        markDifficultButton.style.display = 'inline-block';
+    } else {
+        markKnownButton.style.display = 'none';
+        markDifficultButton.style.display = 'none';
+    }
 }
 
+// Container to hold end buttons
+const endButtonsContainer = document.createElement("div");
+endButtonsContainer.className = "end-buttons";
+endButtonsContainer.style.display = "none"; // Hide by default
+document.querySelector("main").appendChild(endButtonsContainer);
+
 // Show the current flashcard
-function showCard(index){
-    if (filteredCards.length===0){
-        questionElement.textContent = "No flashcards" ;
-        answerElement.textContent="";
-        progressElement.textContent="";
+function showCard(index) {
+    if (filteredCards.length === 0) {
+        questionElement.textContent = "No flashcards";
+        answerElement.textContent = "";
+        progressElement.textContent = "";
         cardElement.className = "card";
         document.getElementById("progress-bar").style.width = "0%";
         return;
     }
     const card = filteredCards[index];
-    showingAnswer=false;
+    showingAnswer = false;
     questionElement.textContent = card.question;
-  answerElement.textContent = card.answer;
-  answerElement.classList.add("hidden");
-  questionElement.classList.remove("hidden");
+    answerElement.textContent = card.answer;
+    answerElement.classList.add("hidden");
+    questionElement.classList.remove("hidden");
 
-  cardElement.className = "card " + card.difficulty; // color-coded by difficulty
-  progressElement.textContent = `Card ${index + 1} of ${filteredCards.length}`; //Updates the progress bar text (e.g., Card 3 of 10) to show the current card number out of the total.
-  const progress = ((index + 1) / filteredCards.length) * 100;
-  document.getElementById("progress-bar").style.width = `${progress}%`;
+    cardElement.className = "card " + card.difficulty; // color-coded by difficulty
+    progressElement.textContent = `Card ${index + 1} of ${filteredCards.length}`; // Corrected template literal
+    const progress = ((index + 1) / filteredCards.length) * 100;
+    document.getElementById("progress-bar").style.width = `${progress}%`; // Corrected template literal
+    endButtonsContainer.style.display = "none"; // Hide during normal viewing
+
+
+    if (filteredCards.length === 0 || index >= filteredCards.length) {
+        questionElement.classList.add("hidden");
+        answerElement.classList.add("hidden");
+        document.getElementById("end-message").classList.remove("hidden");
+        progressElement.textContent = "";
+        document.getElementById("progress-bar").style.width = "100%";
+        endButtonsContainer.style.display = "flex";
+        return;
+    } else {
+        document.getElementById("end-message").classList.add("hidden");
+    }
 }
 
 
@@ -338,8 +394,6 @@ applyFilters();
 
 const knownList = document.getElementById("known-list");
 const difficultList = document.getElementById("difficult-list");
-const markKnownButton = document.getElementById("mark-known");
-const markDifficultButton = document.getElementById("mark-difficult");
 
 // Track known and difficult cards
 let knownCards = [];
@@ -374,18 +428,38 @@ function addToStash(card, type) {
   showCard(currentIndex);
 
   updateUndoButtons(); 
+  updateProgress();
 }
 
+function updateProgress() {
+  const totalCards = allCards.length;
+  const learnedCount = knownCards.length;
+  const difficultCount = difficultCards.length;
 
+  const progressText = `Learned: ${learnedCount}/${totalCards} (${Math.round((learnedCount / totalCards) * 100)}%) | Difficult: ${difficultCount}/${totalCards} (${Math.round((difficultCount / totalCards) * 100)}%)`;
+  document.getElementById("progress").textContent = progressText;
+}
 
 markKnownButton.addEventListener("click", () => {
-  if (filteredCards.length === 0) return;
-  addToStash(filteredCards[currentIndex], "known");
+    if (filteredCards.length === 0) return; // Prevent errors if no cards are available
+    addToStash(filteredCards[currentIndex], "known");
+
+    if (filteredCards.length === 0) {
+        markKnownButton.style.display = 'none';
+        markDifficultButton.style.display = 'none';
+        endButtonsContainer.style.display = 'block';
+    }
 });
 
 markDifficultButton.addEventListener("click", () => {
-  if (filteredCards.length === 0) return;
-  addToStash(filteredCards[currentIndex], "difficult");
+    if (filteredCards.length === 0) return; // Prevent errors if no cards are available
+    addToStash(filteredCards[currentIndex], "difficult");
+
+    if (filteredCards.length === 0) {
+        markKnownButton.style.display = 'none';
+        markDifficultButton.style.display = 'none';
+        endButtonsContainer.style.display = 'block';
+    }
 });
 
 document.getElementById("undo-known").addEventListener("click", () => {
@@ -414,6 +488,78 @@ document.getElementById("undo-difficult").addEventListener("click", () => {
   updateUndoButtons();
 });
 
+
+
+// Start Over button
+const startOverButton = document.createElement("button");
+startOverButton.textContent = "Start Over";
+startOverButton.addEventListener("click", () => {
+  filteredCards = [...allCards];
+  currentIndex = 0;
+  knownCards = [];
+  difficultCards = [];
+  knownUndoStack = [];
+  difficultUndoStack = [];
+  knownList.innerHTML = "";
+  difficultList.innerHTML = "";
+  endButtonsContainer.style.display = "none";
+
+  markKnownButton.style.display = 'inline-block';
+  markDifficultButton.style.display = 'inline-block';
+  updateUndoButtons();
+  showCard(currentIndex);
+});
+endButtonsContainer.appendChild(startOverButton);
+
+// Create New button
+const createButton = document.createElement("button");
+createButton.textContent = "Add New Flashcards";
+createButton.addEventListener("click", () => {
+  // You can redirect to a flashcard creation page or open a form modal
+  window.location.href = "create.html"; // Change to your actual creation page
+});
+endButtonsContainer.appendChild(createButton);
+
+// Add Skip button
+const skipButton = document.createElement("button");
+skipButton.textContent = "Skip";
+skipButton.addEventListener("click", () => {
+  if (filteredCards.length === 0) return;
+  currentIndex = (currentIndex + 1) % filteredCards.length;
+  showCard(currentIndex);
+});
+endButtonsContainer.appendChild(skipButton);
+
+// Add search functionality
+const searchInput = document.createElement("input");
+searchInput.type = "text";
+searchInput.placeholder = "Search flashcards...";
+searchInput.addEventListener("input", () => {
+  const query = searchInput.value.toLowerCase();
+  filteredCards = allCards.filter(card =>
+    card.question.toLowerCase().includes(query) ||
+    (card.answer && card.answer.toLowerCase().includes(query))
+  );
+  currentIndex = 0;
+  showCard(currentIndex);
+});
+document.querySelector(".filters").appendChild(searchInput);
+
+let skipStack = [];
+
+skipButton.addEventListener("click", () => {
+  if (filteredCards.length === 0) return;
+  skipStack.push(filteredCards[currentIndex]);
+  currentIndex = (currentIndex + 1) % filteredCards.length;
+  showCard(currentIndex);
+});
+
+document.getElementById("undo-skip").addEventListener("click", () => {
+  const lastSkipped = skipStack.pop();
+  if (!lastSkipped) return;
+  filteredCards.splice(currentIndex, 0, lastSkipped);
+  showCard(currentIndex);
+});
 
   </script>
 </body>
