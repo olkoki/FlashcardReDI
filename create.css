@@ -1,59 +1,145 @@
 body{
-    background-color: #d9e0e7;
-    text-align: center;
-    font-family:Arial, Helvetica, sans-serif;
-    padding: 50px; 
-    }
+    background-color: #e0e6ec;
+    font-family:Arial, sans-serif;
+    padding: 0; 
+    margin: 0;
+     }
     h1{
-        margin-bottom: 30px;
-       color: #333;
-        font-size: 28px;
+        text-align: center;
+        padding: 16px;
+       margin: 0;
+        box-sizing: border-box;
+        background: #333;;
+        color: white;
+         /* margin-top: 20px; */
     }
-    main{
+    h2{
+        text-align: left;
+        padding: 0;
+        margin: 0;
+    }
+   
+    /* Container for left and right sections */
+    .container{
+        display: flex;
+        gap: 20px;
         padding: 30px;
-      background: #fff;
-         max-width: 400px; 
-       border-radius: 8px;
-        margin:0 auto;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1); /*box-shadow: offset-x offset-y blur-radius color*/
+        justify-content: center;
+        /* align-items: flex-start;
+        flex-direction: row;
+        max-width: 1200px;
+        margin: 0 auto; */
+    }
+    /* Left form section */
+    .form-section{
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0, 0,0.1);
+        /* width: 300px; */
+          max-width: 500px;
+             flex: 1;
+    }
+    
+/* Right preview section */
+    .preview-section{
+        background: #fff;
+        padding: 30px;
+         border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        /* width: 300px; */
+        overflow-y: auto;
+               flex: 1;
+        max-height: 80vh;
     }
 
+    /* Labels and inputs */
   label{
     display: block;
     text-align: left;
     margin: 15px 0 5px;
     font-weight: bold;
 }
-input[type="text"]{
+input[type="text"],select{
     width: 100%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #333;
     border-radius: 5px;
+    box-sizing: border-box;
     cursor: pointer;
 
 }
-
+/* Buttons */
 button{
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-    padding: 10px 20px;
-    margin: 20px 10px;
-    background-color:#1d12e9;
-    color: white;
-    border: none;
+    font-family:Arial, sans-serif;
+    border: 1px solid #333; /* 2px wide solid black border */
+    padding: 8px 16px;
+    margin: 8px;
+    background-color: #f0f0f0;;
+    color: black;
     border-radius: 5px; /* It gives a curve shape on the edges*/
     cursor: pointer;
     font-weight: bold;
 }
 
 button:hover{
-    background-color: #111113;/* It chnages the color of the button when cursor is pointed*/
+    background-color:#a4adbb;/* It chnages the color of the button when cursor is pointed*/
 }
-.actions {
-    margin-top: 20px;
-  }
+
+
+  /* Status message */
 #status{
     margin-top: 15px;
     color: green;
     font-weight: bold;
 } 
+/* Flashcard preview styling */
+.card {
+    background: rgb(240, 245, 247);
+    border-left: 5px solid#1d12e9;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    text-align: left;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.card p {
+  margin: 5px 0;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .form-section, .preview-section {
+    max-width: 100%;
+  }
+}
+input[type="file"] {
+  padding: 6px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  color: black;
+  
+  cursor: pointer;
+}
+
+input[type="file"]::file-selector-button {
+  padding: 6px 12px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  color: black;
+  cursor: pointer;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-color: #a4adbb
+  ;
+}
