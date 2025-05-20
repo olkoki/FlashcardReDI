@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Flashcard Creator</title>
+  <!-- <link rel="stylesheet" href="createnew1.css"> -->
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  <style>
+    body{
+      background-color: #e0e6ec;
+      font-family: Arial, sans-serif;
+      padding: 0;
+      margin: 0;
+
+    }
+
+    h1 {
+      text-align: center;
+      padding: 8px 0;
+      margin: 4px 0;
+      background: #333;
+      color: white; 
+      }
+
+    h2 {
+      text-align: left;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* Container for left and right sections */
+    .container {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      justify-content: center;
+    height: 85vh;
+    }
+
+    /* Left form section */
+    .form-section {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      flex: 1; 
+        }
+
+    /* Right preview section */
+    .preview-section {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      overflow-y: auto;
+      flex: 1;
+      max-height: 80vh; 
+    }
+
+    /* Labels and inputs */
+    label {
+      display: block;
+      text-align: left;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #333;
+      border-radius: 5px;
+      box-sizing: border-box;
+      cursor: pointer;
+
+    }
+
+    /* Buttons */
+    button {
+      font-family: Arial, sans-serif;
+      border: 1px solid #333;
+      padding: 8px 16px;
+      margin: 8px;
+      background-color: #f0f0f0;
+      color: black;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold; 
+      }
+
+    button:hover {
+      background-color: #a4adbb;
+      /* It chnages the color of the button when cursor is pointed*/
+    }
+
+
+    /* Status message */
+    #status {
+      margin-top: 15px;
+      font-weight: bold; 
+    }
+
+    /* Success message */
+     .status-success {
+      color: green; 
+    }
+
+    /* Error message */
+    .status-error {
+      color: red; 
+    }
+
+    /* Flashcard preview styling */
+    .card {
+     background: rgb(240, 245, 247);
+      border-left: 5px solid #1d12e9;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      text-align: left;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .card p {
+      margin: 5px 0; 
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px; 
+      }
+
+      .form-section,
+      .preview-section {
+        max-width: 100%;
+      }
+    }
+
+    input[type="file"] {
+      padding: 6px;
+      border: 1px solid #333;
+      border-radius: 5px;
+      background-color: #f0f0f0;
+      color: black;
+      cursor: pointer; 
+    }
+
+    input[type="file"]::file-selector-button {
+      padding: 6px 12px;
+      border: 1px solid #333;
+      border-radius: 5px;
+      background-color: #f0f0f0;
+      color: black;
+      cursor: pointer; 
+    }
+
+    input[type="file"]::file-selector-button:hover {
+      background-color: #a4adbb;
+    }
+
+    .edit-btn {
+     margin-right: "10px";
+      background-color: "#ffcc00";
+      color: "black";
+    }
+
+    .del-btn {
+      background-color: "#ff4d4d";
+      color: "white";
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Create a Flashcard</h1>
+  <div class="container">
+    <!-- Left: Form Section -->
+    <div class="form-section">
+      <label for="question">Question:</label>
+      <input id="question" type="text" placeholder="Enter a question">
+      <label for="answer">Answer:</label>
+      <input id="answer" type="text" placeholder="Enter a answer">
+      <label for="difficulty">Difficulty:</label>
+      <select id="difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+      <label for="category">Category:</label>
+      <input id="category" type="text" placeholder="e.g. Math, Science">
+      <button onclick="savecard()">Save</button>
+      <button onclick="downloadcards()">Download</button>
+      <button onclick="removeDuplicateQuestions()">Remove Duplicates</button>
+      <!-- Optional file upload -->
+      <input type="file" id="upload" onchange="uploadCards(event)" accept=".json">
+      <div id="status"></div>
+    </div>
+    <!-- Preview Section -->
+    <div class="preview-section">
+      <h2>Flashcard Preview</h2>
+      <div id="preview"></div>
+    </div>
+  </div>
+  <script>
+    let flashcards = JSON.parse(localStorage.getItem("flashcards")) || [];
+    function showStatus(message, isError = false) {
+      const status = document.getElementById("status");
+      status.textContent = message;
+      status.style.color = isError ? "red" : "green";
+
+      setTimeout(() => {
+        status.textContent = "";
+      }, 3000);
+    }
+
+    function clearForm() {
+      document.getElementById("question").value = "";
+      document.getElementById("answer").value = "";
+      document.getElementById("difficulty").value = "easy";
+      document.getElementById("category").value = "";
+    }
+
+    function savecard() {
+      const question = document.getElementById("question").value.trim();
+      const answer = document.getElementById("answer").value.trim();
+      const difficulty = document.getElementById("difficulty").value;
+      const category = document.getElementById("category").value.trim();
+
+      if (question && answer) {
+
+        flashcards.push({ question, answer, difficulty, category });
+        localStorage.setItem("flashcards", JSON.stringify(flashcards));
+        showStatus("✅ Flashcard saved");
+
+        // Clear inputs
+        //document.getElementById("question").value="";
+        //document.getElementById("answer").value="";
+        //document.getElementById("category").value = "";
+        clearForm();
+        //  Only render the flashcard if it's valid (display flashcards as soon as they’re added)
+        renderCard({ question, answer, difficulty, category }, flashcards.length - 1);
+      } else {
+              showStatus("❌ Please fill both fields");
+
+      }
+
+    }
+    function renderCard(card, index) {
+      const preview = document.getElementById("preview");
+
+      const cardDiv = document.createElement("div");
+      cardDiv.className = "card";
+     
+      const q = document.createElement("p");
+      q.innerHTML = `<strong>Q:</strong> ${card.question}`;
+
+      const a = document.createElement("p");
+      a.innerHTML = `<strong>A:</strong> ${card.answer}`;
+
+      const d = document.createElement("p");
+      d.innerHTML = `<strong>Difficulty:</strong> ${card.difficulty}`;
+
+      const c = document.createElement("p");
+      c.innerHTML = `<strong>Category:</strong> ${card.category || "N/A"}`;
+
+      // Edit Button
+      const editBtn = document.createElement("button");
+      editBtn.textContent = "✏️ Edit";
+      editBtn.className = "edit-btn"; // Apply your CSS styles
+      // Edit button click handler
+      editBtn.onclick = function () {
+        const confirmEdit = confirm("Edit this flashcard?");
+        if (confirmEdit) {
+          // Prompt user to enter new values
+          const newQuestion = prompt("Edit Question:", card.question);
+          const newAnswer = prompt("Edit Answer:", card.answer);
+          const newDifficulty = prompt("Edit Difficulty (easy/medium/hard):", card.difficulty);
+          const newCategory = prompt("Edit Category:", card.category);
+
+          // Validate input (optional)
+          if (newQuestion && newAnswer) {
+            flashcards[index] = {
+              question: newQuestion.trim(),
+              answer: newAnswer.trim(),
+              difficulty: newDifficulty.trim().toLowerCase(),
+              category: newCategory.trim()
+            };
+            localStorage.setItem("flashcards", JSON.stringify(flashcards));
+            updatePreview();
+          } else {
+            alert("❌ Question and Answer cannot be empty.");
+          }
+        }
+      };
+
+
+      //  Delete Button
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "🗑️ Delete";
+      delBtn.className = "del-btn"; // Apply your CSS styles
+      // Delete button click handler
+      delBtn.onclick = function () {
+        const confirmDelete = confirm("Are you sure you want to delete this card?");
+        if (confirmDelete) {
+          cardDiv.style.opacity = "0"; // Start fade out
+          setTimeout(() => {
+            flashcards.splice(index, 1);
+            localStorage.setItem("flashcards", JSON.stringify(flashcards));
+            updatePreview();
+            showStatus("✅ Card deleted successfully."); // <-- Status message here
+          }, 300); // Wait for animation
+        }
+      };
+
+      // Append all elements to card container
+      cardDiv.appendChild(q);
+      cardDiv.appendChild(a);
+      cardDiv.appendChild(d);
+      cardDiv.appendChild(c);
+      cardDiv.appendChild(editBtn);
+      cardDiv.appendChild(delBtn);
+
+      preview.appendChild(cardDiv);
+    }
+
+    // Download flashcards as a JSON file
+    function downloadcards() {
+      const blob = new Blob([JSON.stringify(flashcards)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "flashcards.json";
+      link.click();
+      URL.revokeObjectURL(url);
+      setTimeout(() => {
+        showStatus("✅ File Downloaded successfully");
+      }, 1000);
+    }
+
+    // Clear preview area and render all flashcards
+    function updatePreview() {
+      const preview = document.getElementById("preview");
+      preview.innerHTML = ""; // Clear all cards
+      flashcards.forEach(renderCard);// Render each card
+    }
+
+
+    // Upload flashcards from a JSON file input
+    function uploadCards(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const uploaded = JSON.parse(e.target.result);
+          // Only accept if uploaded data is an array
+          if (Array.isArray(uploaded)) {
+            flashcards = flashcards.concat(uploaded);
+            localStorage.setItem("flashcards", JSON.stringify(flashcards));
+            updatePreview();
+            showStatus("✅ Flashcards uploaded successfully.");
+            } else {
+            showStatus("❌Invalid file format.");
+          }
+        } catch (err) {
+
+          showStatus("❌ Error reading file.");
+
+        }
+      };
+
+      reader.readAsText(file);
+    }
+    // Remove flashcards with duplicate questions (case-insensitive)
+    function removeDuplicateQuestions() {
+
+      const seen = new Set();
+      const uniqueCards = [];
+
+      for (const card of flashcards) {
+        const q = card.question.trim().toLowerCase();
+        if (!seen.has(q)) {
+          seen.add(q);
+          uniqueCards.push(card);
+        }
+      }
+      flashcards = uniqueCards;// Update global flashcards array
+      localStorage.setItem("flashcards", JSON.stringify(flashcards));// Save unique cards
+
+      updatePreview();
+
+      showStatus("✅ Duplicates removed.");
+
+    }
+    // Load and preview on page load
+    updatePreview();
+
+  </script>
+  <script src="createnew1.js"></script>
+</body>
+
+</html>
