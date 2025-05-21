@@ -6,20 +6,32 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Flashcard Learning</title>
   <link rel="stylesheet" href="learning.css">
-  <link rel="icon" href="./favicon.ico" type="image/x-icon">
   <style>
-    body{
-    font-family:Arial, sans-serif ;
+  body {
+    font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #eef;
-    padding: 40px;
+    background-color: #F1F7F9;
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 main {
-  margin: 0 220px;
+  margin: 0;
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,13 +40,41 @@ main {
   width: 100%;
   max-width: 600px;
   margin: auto;
+  box-sizing: border-box;
 }
+
+/* Responsive: card container for tablets and below */
+@media screen and (max-width: 900px) {
+  .card-container {
+    max-width: 98vw;
+    padding: 0.5rem;
+  }
+}
+
+/* Fully responsive for mobile */
+@media screen and (max-width: 600px) {
+  .card-container {
+    width: 100vw;
+    max-width: 100vw;
+    padding: 0.5rem 0.2rem;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  .card {
+    min-width: 0;
+    width: 100%;
+    font-size: 1rem;
+    padding: 1rem 0.5rem;
+  }
+}
+
 .card{
   background-color: #fff;
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   padding: 2rem;
   width: 100%;
+  font-size: 24px;
   text-align: center;
   word-wrap: break-word;
     transition: transform 1s ease;
@@ -51,6 +91,7 @@ main {
 }
 .backface {
   transform: rotateX(180deg);
+  font-weight: bolder;
 }
 
 /* Difficulty-based styles */
@@ -73,50 +114,124 @@ main {
 #mark-known {
   margin-right: 5%;
   width: 10rem;
-  padding: 10px;
+  padding: 12px 0;
+  background: linear-gradient(90deg, #4ade80 60%, #22d3ee 100%);
+  color: #134e4a;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(34,211,238,0.08);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+}
+#mark-known:hover, #mark-known:focus {
+  background: linear-gradient(90deg, #22d3ee 60%, #4ade80 100%);
+  color: #065f46;
+  transform: scale(1.04);
 }
 
 #mark-difficult {
   margin-left: 5%;
   width: 10rem;
-  padding: 10px;
+  padding: 12px 0;
+  background: linear-gradient(90deg, #fca5a5 60%, #f87171 100%);
+  color: #7f1d1d;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(248,113,113,0.08);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+}
+#mark-difficult:hover, #mark-difficult:focus {
+  background: linear-gradient(90deg, #f87171 60%, #fca5a5 100%);
+  color: #991b1b;
+  transform: scale(1.04);
 }
 
+/* Hide stashes by default, show on hover */
 .stash {
   position: fixed;
-  top: 80px;
+  top: 50%;
   width: 200px;
-  height: calc(100% - 100px);
-  background-color: #f4f4f4;
+  min-height: 200px;
   overflow-y: auto;
-  padding: 10px;
+  padding: 20px;
   border: 1px solid #ccc;
   font-size: 14px;
+  z-index: 10;
+  opacity: 0.3;
+  transition: transform 0.4s cubic-bezier(.4,2,.6,1), opacity 0.3s;
+  pointer-events: auto;
 }
 
 .stash.left {
   left: 0;
+  transform: translateY(-50%) translateX(-180px);
+  opacity: 0.3;
+  border-radius: 0 15% 15% 0;
+  background-color: #2ecc71;
+  color: #fff;
 }
 
 .stash.right {
   right: 0;
+  transform: translateY(-50%) translateX(180px);
+  opacity: 0.3;
+  border-radius: 15% 0 0 15%;
 }
 
-.stash h3 {
-  text-align: center;
-  margin-bottom: 10px;
+.stash.left:hover,
+.stash.left:focus-within {
+  transform: translateY(-50%) translateX(0) scale(1.08);
+  opacity: 1;
+  z-index: 20;
+}
+.stash.right:hover,
+.stash.right:focus-within {
+  transform: translateY(-50%) translateX(0) scale(1.08);
+  opacity: 1;
+  z-index: 20;
 }
 
-.stash ul {
-  list-style: none;
-  padding: 0;
+/* Add a trigger zone for the hover effect */
+.stash.left::before,
+.stash.right::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  background: transparent;
+  z-index: 5;
 }
 
-.stash li {
-  background: #eee;
-  margin-bottom: 5px;
-  padding: 5px;
-  border-radius: 4px;
+.stash.left::before {
+  right: -20px;
+  cursor: pointer;
+}
+
+.stash.right::before {
+  left: -20px;
+  cursor: pointer;
+}
+
+/* Animate new li items */
+.stash li.animated {
+  animation: fadeInUp 0.4s cubic-bezier(.4,2,.6,1);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 ul {
@@ -151,6 +266,111 @@ img {
 .end-buttons button:hover {
   background-color: #2563eb;
 }
+
+.buttons-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none; /* Let buttons receive events, but container doesn't block */
+}
+
+#mark-known, #mark-difficult {
+  pointer-events: auto;
+  margin: 0;
+  width: 44%;
+  min-width: 120px;
+  max-width: 220px;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.stash li.animated {
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+    background-color: #6cabc1;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .topnav p {
+    color: white;
+    font-size: 1rem;
+    margin: 0;
+    padding: 14px 16px;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  /* Style the links inside the navigation bar */
+  .topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    padding-left: 5%;
+    padding-right: 5%;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  
+  /* Change the color of links on hover */
+  .topnav a:hover {
+    background-color: #f15a22;
+    color: white;
+  }
+  
+  /* Add an active class to highlight the current page */
+  .topnav a.active {
+    background-color: #2ecc71;
+    color: white;
+  }
+  
+  /* Hide the link that should open and close the topnav on small screens */
+  .topnav .icon {
+    display: none;
+  }
+
+  /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
+@media screen and (max-width: 600px) {
+    .topnav a:not(:first-child) {display: none;}
+    .topnav a.icon {
+      float: right;
+      display: block;
+    }
+  }
+  
+  /* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
+  @media screen and (max-width: 600px) {
+    .topnav.responsive {position: relative;}
+    .topnav.responsive a.icon {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+    .topnav.responsive a {
+      float: none;
+      display: block;
+      text-align: left;
+    }
+  }
+
 
 
   /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
@@ -192,9 +412,166 @@ img {
     }
   }
 
+  /* Responsive: stack stashes and main content vertically on small screens */
+@media screen and (max-width: 900px) {
+  .stash {
+    position: static;
+    transform: none;
+    width: 90%;
+    margin: 10px auto;
+    z-index: 1;
+    opacity: 1;
+    border-radius: 12px;
+  }
+  main {
+    max-width: 100%;
+    margin: 0;
+  }
+}
+
+/* Even more compact for very small screens */
+@media screen and (max-width: 600px) {
+  .stash {
+    width: 100%;
+    margin: 8px 0;
+    border-radius: 0;
+    min-height: unset;
+    font-size: 1rem;
+    opacity: 1;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .stash.left, .stash.right {
+    left: unset;
+    right: unset;
+    border-radius: 0;
+    margin-bottom: 10px;
+    top: unset;
+    transform: none;
+  }
+}
+
+/* Hide hover/focus effects on mobile */
+@media screen and (max-width: 900px) {
+  .stash.left:hover,
+  .stash.left:focus-within,
+  .stash.right:hover,
+  .stash.right:focus-within {
+    transform: none;
+    opacity: 1;
+    z-index: 1;
+  }
+  .stash.left::before,
+  .stash.right::before {
+    display: none;
+  }
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: #e0f2fe;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0 2rem 0;
+  box-shadow: 0 2px 8px rgba(34,211,238,0.08);
+}
+
+.filters label {
+  font-weight: 600;
+  color: #2563eb;
+  margin-right: 0.3rem;
+}
+
+.filters select,
+.filters input[type="text"] {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #bae6fd;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fff;
+  color: #2563eb;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.filters select:focus,
+.filters input[type="text"]:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px #bae6fd;
+}
+
+.filters input[type="text"]::placeholder {
+  color: #60a5fa;
+  opacity: 1;
+}
+
+.filters select#filter-difficulty {
+  background: linear-gradient(90deg, #d1fae5 0%, #fef9c3 50%, #fee2e2 100%);
+  color: #2563eb;
+  font-weight: 600;
+  border: 2px solid #38bdf8;
+  border-radius: 8px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1.05rem;
+  min-width: 130px;
+  box-shadow: 0 2px 8px rgba(34,211,238,0.10);
+  transition: border 0.2s, box-shadow 0.2s;
+  appearance: none;
+  cursor: pointer;
+  outline: none;
+  margin-right: 0.5rem;
+  margin-left: 0.2rem;
+  background-image:
+    linear-gradient(90deg, #d1fae5 0%, #fef9c3 50%, #fee2e2 100%),
+    url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 20 20' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M5.516 7.548a.75.75 0 0 1 1.06 0L10 10.97l3.424-3.423a.75.75 0 1 1 1.06 1.06l-4 4a.75.75 0 0 1-1.06 0l-4-4a.75.75 0 0 1 0-1.06z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.7em center;
+  background-size: 1.1em;
+}
+
+.filters select#filter-difficulty:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px #bae6fd;
+}
+
+.filters select#filter-difficulty option[value="easy"] {
+  background: #d1fae5;
+  color: #166534;
+  font-weight: 600;
+}
+.filters select#filter-difficulty option[value="medium"] {
+  background: #fef9c3;
+  color: #92400e;
+  font-weight: 600;
+}
+.filters select#filter-difficulty option[value="hard"] {
+  background: #fee2e2;
+  color: #991b1b;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.7rem 0.5rem;
+    gap: 0.7rem;
+  }
+}
   </style>
 </head>
 <body>
+  <div class="topnav" id="myTopnav">
+    <a href="createnew.html">Create a Deck</a>
+    <a href="learning.html" class="active">Learning</a>
+    <p>Lovely Flashcards</p>
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
   <main>
     <h1>Flashcard Learning</h1>
     <!-- Filters Section -->
@@ -221,23 +598,24 @@ img {
 
   <div class="buttons-container">
     <button id="mark-known">Learned!</button>
-    <button id="mark-difficult">Still difficult</button>
+    <button id="mark-difficult">Still learning</button>
   </div>
 </div>
 
   </main>
 
-    <div id="known-stash" class="stash-left">
-      <h3>Known</h3>
-      <ul id="known-list"></ul>
-      <button id="undo-known">Undo</button>
-    </div>
+   <div id="known-stash" class="stash left">
+  <h3>Known</h3>
+  <ul id="known-list"></ul>
+  <button id="undo-known">Undo</button>
+</div>
 
-    <div id="difficult-stash" class="stash-right">
-      <h3>Difficult</h3>
-      <ul id="difficult-list"></ul>
-      <button id="undo-difficult">Undo</button>
-    </div>
+<div id="difficult-stash" class="stash right">
+  <h3>Difficult</h3>
+  <ul id="difficult-list"></ul>
+  <button id="undo-difficult">Undo</button>
+</div>
+
 
 
     <br>
@@ -248,9 +626,9 @@ img {
     <button id="next">Next</button>
 
   <div style="background:#ccc;height:8px;margin:10px 0;">
-    <div id="progress-bar" style="height:100%;background:#04AA6D;width:0%;"></div>
+    <div id="progress-bar" style="height:100%;background:#04AA6D;width:0%;transition:width 0.3s;"></div>
   </div>
-  <p id="progress"></p>
+  <p id="progress" style="margin:0 0 1rem 0;"></p>
 
   <script>
     
@@ -357,7 +735,6 @@ document.addEventListener("keydown", (e) => {
   if (e.key === " ") cardElement.click(); // Flip card
 });
 
-
 // Next card
 nextButton.addEventListener("click", () =>{
 if(filteredCards.length===0)return;
@@ -395,6 +772,9 @@ applyFilters();
 const knownList = document.getElementById("known-list");
 const difficultList = document.getElementById("difficult-list");
 
+
+
+
 // Track known and difficult cards
 let knownCards = [];
 let difficultCards = [];
@@ -416,12 +796,20 @@ function addToStash(card, type) {
   if (type === "known") {
     knownCards.push(card);
     knownList.appendChild(listItem);
-    knownUndoStack.push({ card, element: listItem }); // push to undo stack
+    knownUndoStack.push({ card, element: listItem });
   } else if (type === "difficult") {
     difficultCards.push(card);
     difficultList.appendChild(listItem);
-    difficultUndoStack.push({ card, element: listItem }); // push to undo stack
+    difficultUndoStack.push({ card, element: listItem });
   }
+
+  // --- Force reflow before adding animation class ---
+  void listItem.offsetWidth;
+  listItem.classList.add("animated");
+
+  listItem.addEventListener("animationend", () => {
+    listItem.classList.remove("animated");
+  });
 
   filteredCards.splice(currentIndex, 1);
   if (currentIndex >= filteredCards.length) currentIndex = 0;
@@ -435,9 +823,19 @@ function updateProgress() {
   const totalCards = allCards.length;
   const learnedCount = knownCards.length;
   const difficultCount = difficultCards.length;
+  const skippedCount = skipStack.length || 0;
+  const remainingCount = filteredCards.length;
 
-  const progressText = `Learned: ${learnedCount}/${totalCards} (${Math.round((learnedCount / totalCards) * 100)}%) | Difficult: ${difficultCount}/${totalCards} (${Math.round((difficultCount / totalCards) * 100)}%)`;
+  let progressText = `Learned: ${learnedCount}/${totalCards} (${totalCards ? Math.round((learnedCount / totalCards) * 100) : 0}%) | `;
+  progressText += `Difficult: ${difficultCount}/${totalCards} (${totalCards ? Math.round((difficultCount / totalCards) * 100) : 0}%) | `;
+  progressText += `Skipped: ${skippedCount} | `;
+  progressText += `Remaining: ${remainingCount}`;
+
   document.getElementById("progress").textContent = progressText;
+
+  // Progress bar shows learned + difficult as a percentage of total
+  const progressPercent = totalCards ? ((learnedCount + difficultCount) / totalCards) * 100 : 0;
+  document.getElementById("progress-bar").style.width = `${progressPercent}%`;
 }
 
 markKnownButton.addEventListener("click", () => {
@@ -516,7 +914,7 @@ const createButton = document.createElement("button");
 createButton.textContent = "Add New Flashcards";
 createButton.addEventListener("click", () => {
   // You can redirect to a flashcard creation page or open a form modal
-  window.location.href = "create.html"; // Change to your actual creation page
+  window.location.href = "createnew.html"; // Change to your actual creation page
 });
 endButtonsContainer.appendChild(createButton);
 
@@ -561,6 +959,8 @@ document.getElementById("undo-skip").addEventListener("click", () => {
   showCard(currentIndex);
 });
 
+
+//Prevent firing multiple times/ hover effect
   </script>
 </body>
 </html>
