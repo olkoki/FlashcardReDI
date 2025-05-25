@@ -8,9 +8,10 @@
   <title>Flashcard Creator</title>
   <!-- <link rel="stylesheet" href="createnew1.css"> -->
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  
   <style>
     body{
-      background-color: #e0e6ec;
+      background-color: #fff;
       font-family: Arial, sans-serif;
       padding: 0;
       margin: 0;
@@ -18,23 +19,26 @@
     }
 
     h1 {
+      font-family: Arial, sans-serif;
       text-align: center;
-      padding: 8px 0;
-      margin: 4px 0;
-      background: #333;
+      padding: 4px 0;
+      margin: 0 0;
+      background: #6a69d4;
       color: white; 
       }
 
     h2 {
+      color: rgb(255, 255, 255);
       text-align: left;
       padding: 0;
       margin: 0;
+      
     }
 
     /* Container for left and right sections */
     .container {
       display: flex;
-      gap: 20px;
+      gap: 30px;
       padding: 20px;
       justify-content: center;
     height: 85vh;
@@ -42,23 +46,25 @@
 
     /* Left form section */
     .form-section {
-      background: #fff;
+      background: #8aa2ce;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       max-width: 500px;
       flex: 1; 
+      border: 1px solid #864508;
         }
 
     /* Right preview section */
     .preview-section {
-      background: #fff;
+      background: #8aa2ce;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       overflow-y: auto;
       flex: 1;
       max-height: 80vh; 
+       border: 1px solid #864508;
     }
 
     /* Labels and inputs */
@@ -74,7 +80,7 @@
       width: 100%;
       padding: 10px;
       font-size: 16px;
-      border: 1px solid #333;
+      border: 1px solid #1a097a;
       border-radius: 5px;
       box-sizing: border-box;
       cursor: pointer;
@@ -118,13 +124,14 @@
 
     /* Flashcard preview styling */
     .card {
-     background: rgb(240, 245, 247);
-      border-left: 5px solid #1d12e9;
-      padding: 10px;
-      margin-bottom: 10px;
+     background: white;
+      border-left: 5px solid #d37474;
+      padding: 1px;
+      margin-bottom: 15px;
       border-radius: 5px;
       text-align: left;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      border: 1px solid #864508;
     }
 
     .card p {
@@ -151,6 +158,7 @@
       background-color: #f0f0f0;
       color: black;
       cursor: pointer; 
+       font-weight: bold; 
     }
 
     input[type="file"]::file-selector-button {
@@ -160,6 +168,7 @@
       background-color: #f0f0f0;
       color: black;
       cursor: pointer; 
+       font-weight: bold; 
     }
 
     input[type="file"]::file-selector-button:hover {
@@ -168,13 +177,13 @@
 
     .edit-btn {
      margin-right: "10px";
-      background-color: "#ffcc00";
-      color: "black";
+      background-color: #ffcc00;
+      color: black;
     }
 
     .del-btn {
-      background-color: "#ff4d4d";
-      color: "white";
+      background-color: #ff4d4d;
+      color: white;
     }
   </style>
 </head>
@@ -206,6 +215,7 @@
     <!-- Preview Section -->
     <div class="preview-section">
       <h2>Flashcard Preview</h2>
+      <br>
       <div id="preview"></div>
     </div>
   </div>
