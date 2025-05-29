@@ -220,7 +220,8 @@
     </div>
   </div>
   <script>
-    let flashcards = JSON.parse(localStorage.getItem("flashcards")) || [];
+    let flashcards = JSON.parse(localStorage.getItem("flashcards")) || [];    
+    
     function showStatus(message, isError = false) {
       const status = document.getElementById("status");
       status.textContent = message;
