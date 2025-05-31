@@ -181,6 +181,8 @@ main {
   transform: translateY(-50%) translateX(180px);
   opacity: 0.3;
   border-radius: 15% 0 0 15%;
+  background-color: #f87171;
+  color: #fff;
 }
 
 .stash.left:hover,
@@ -255,6 +257,7 @@ img {
 .end-buttons button {
   padding: 10px 15px;
   font-size: 1rem;
+  margin: 0 5px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
@@ -649,8 +652,9 @@ const shuffleButton = document.getElementById("shuffle");
 const progressElement = document.getElementById("progress");
 const filterDifficulty = document.getElementById("filter-difficulty");
 const filterCategory = document.getElementById("filter-category");
-const markKnownButton = document.getElementById("mark-known"); // Moved here
-const markDifficultButton = document.getElementById("mark-difficult"); // Moved here
+const markKnownButton = document.getElementById("mark-known"); 
+const markDifficultButton = document.getElementById("mark-difficult"); 
+const skippedCount = 0;
 
 //  Filter flashcards by difficulty and category
 function applyFilters() {
@@ -684,13 +688,16 @@ document.querySelector("main").appendChild(endButtonsContainer);
 
 // Show the current flashcard
 function showCard(index) {
-    if (filteredCards.length === 0) {
-        questionElement.textContent = "No flashcards";
-        answerElement.textContent = "";
+  if (filteredCards.length === 0 || index >= filteredCards.length) {
+        questionElement.classList.add("hidden");
+        answerElement.classList.add("hidden");
+        document.getElementById("end-message").classList.remove("hidden");
         progressElement.textContent = "";
-        cardElement.className = "card";
-        document.getElementById("progress-bar").style.width = "0%";
+        document.getElementById("progress-bar").style.width = "100%";
+        endButtonsContainer.style.display = "flex";
         return;
+    } else {
+        document.getElementById("end-message").classList.add("hidden");
     }
     const card = filteredCards[index];
     showingAnswer = false;
@@ -705,18 +712,6 @@ function showCard(index) {
     document.getElementById("progress-bar").style.width = `${progress}%`; // Corrected template literal
     endButtonsContainer.style.display = "none"; // Hide during normal viewing
 
-
-    if (filteredCards.length === 0 || index >= filteredCards.length) {
-        questionElement.classList.add("hidden");
-        answerElement.classList.add("hidden");
-        document.getElementById("end-message").classList.remove("hidden");
-        progressElement.textContent = "";
-        document.getElementById("progress-bar").style.width = "100%";
-        endButtonsContainer.style.display = "flex";
-        return;
-    } else {
-        document.getElementById("end-message").classList.add("hidden");
-    }
 }
 
 
@@ -871,6 +866,11 @@ document.getElementById("undo-known").addEventListener("click", () => {
   showCard(currentIndex);
 
   updateUndoButtons(); 
+  updateProgress();
+  // Show the mark buttons again if hidden
+  markKnownButton.style.display = 'inline-block';
+  markDifficultButton.style.display = 'inline-block';
+
 });
 
 document.getElementById("undo-difficult").addEventListener("click", () => {
@@ -884,6 +884,11 @@ document.getElementById("undo-difficult").addEventListener("click", () => {
   showCard(currentIndex);
 
   updateUndoButtons();
+  updateProgress();
+  // Show the mark buttons again if hidden
+  markKnownButton.style.display = 'inline-block';
+  markDifficultButton.style.display = 'inline-block';
+
 });
 
 
