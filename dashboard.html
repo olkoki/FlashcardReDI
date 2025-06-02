@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <title>Lovely Flashcards</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -96,10 +98,59 @@
             background-color: #f15a22;
             border-color: #f15a22;
         }
+        .fun-title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 3rem;
+  color: #6cabc1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.1em;
+  line-height: 1.2;
+  text-align: center;
+}
+
+/* Style for each letter */
+.glow-letter {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  text-shadow:
+    0 0 3px rgba(241, 90, 34, 0.4),
+    0 0 6px rgba(241, 90, 34, 0.3),
+    0 0 9px rgba(241, 90, 34, 0.2);
+  animation: glowPulse 2.5s ease-in-out infinite alternate;
+}
+.fun-title:hover .glow-letter {
+  transform: rotate(0deg) !important;
+}
+
+/* Glow pulse animation */
+@keyframes glowPulse {
+  0% {
+    text-shadow:
+      0 0 3px rgba(241, 90, 34, 0.2),
+      0 0 6px rgba(241, 90, 34, 0.15),
+      0 0 9px rgba(241, 90, 34, 0.1);
+  }
+  100% {
+    text-shadow:
+      0 0 6px rgba(241, 90, 34, 0.5),
+      0 0 10px rgba(241, 90, 34, 0.4),
+      0 0 14px rgba(241, 90, 34, 0.3);
+  }
+}
+
+
+
     </style>
 </head>
 <body>
-    <h1>Welcome to Lovely Flashcards!</h1>
+    <h1>Welcome to</h1>
+    <br>
+    <h1 id="fun-title" class="fun-title" data-text="Lovely Flashcards">Lovely Flashcards</h1>
+    <br>
+    <br>
     <p>Here you can create, manage, and study your flashcards.</p>
 
     <div class="flashcard-container">
@@ -119,4 +170,24 @@
     <p style="text-align: center;">Made with ❤️ by Javascript Team of ReDI School of Digital Integration</p>
     <br>
 </body>
+<script>
+
+const title = document.getElementById("fun-title");
+const text = title.textContent;
+title.textContent = "";
+
+const tiltAmount = 5;
+
+for (let i = 0; i < text.length; i++) {
+  const span = document.createElement("span");
+  span.textContent = text[i];
+  const rotation = (i % 2 === 0) ? tiltAmount : -tiltAmount;
+  span.style.transform = `rotate(${rotation}deg)`;
+  span.classList.add("glow-letter");
+  title.appendChild(span);
+}
+
+
+</script>
+
 </html>
