@@ -15,6 +15,7 @@
       font-family: Arial, sans-serif;
       padding: 0;
       margin: 0;
+   
 
     }
 
@@ -24,7 +25,8 @@
       padding: 4px 0;
       margin: 0 0;
       background: #fff;
-      color:#8aa2ce;
+      color: #8aa2ce;
+      font-size: 24px;
     }
 
     h2 {
@@ -80,6 +82,8 @@
       text-align: left;
       margin: 15px 0 5px;
       font-weight: bold;
+      color: #1a1266;
+      
     }
 
     input[type="text"],
@@ -87,28 +91,34 @@
       width: 100%;
       padding: 10px;
       font-size: 16px;
-      border: 1px solid #1a097a;
+      border: 2px solid #1a097a;
       border-radius: 5px;
       box-sizing: border-box;
       cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
     }
 
     /* Buttons */
     button {
       font-family: Arial, sans-serif;
-      border: 1px solid #333;
+      border: #1a097a;
       padding: 8px 16px;
       margin: 8px;
       background-color: #f0f0f0;
-      color: black;
+      color: rgb(236, 237, 243);
       border-radius: 5px;
       cursor: pointer;
       font-weight: bold;
+      transition: transform 0.2s ease;
+      background: linear-gradient(to right,  #53899e, #210bb3); /* Two-color gradient */
+      font-size: 14px;
     }
 
     button:hover {
       background-color: #a4adbb;
+        border: #1a097a;
+  transform: scale(1.05);
       /* It chnages the color of the button when cursor is pointed*/
     }
 
@@ -131,18 +141,19 @@
 
     /* Flashcard preview styling */
     .card {
-      background: white;
-      border-left: 5px solid #d37474;
+      background: rgb(247, 248, 248);
       padding: 1px;
       margin-bottom: 15px;
-      border-radius: 8px;
+      border-radius: 10px;
       text-align: left;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      border: 5px solid #937de6;
+      /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+      border: 2px solid #1a097a;
     }
 
     .card p {
       margin: 5px 0;
+      line-height: 24px;
     }
 
     @media (max-width: 768px) {
@@ -157,40 +168,69 @@
         max-width: 100%;
       }
     }
-
+    /* text of the file upload*/
     input[type="file"] {
       padding: 6px;
-      border: 1px solid #333;
+      border:#7a3209;
       border-radius: 5px;
-      background-color: #f0f0f0;
-      color: black;
+      background: linear-gradient(to right, #bbc4c7, #307888);
+      color: rgb(230, 224, 224);
       cursor: pointer;
       font-weight: bold;
+      
     }
 
     input[type="file"]::file-selector-button {
       padding: 6px 12px;
-      border: 1px solid #333;
+      border: #1a097a;
       border-radius: 5px;
-      background-color: #f0f0f0;
-      color: black;
+      background:linear-gradient(to right,#53899e, #210bb3);
+      color: rgb(238, 232, 232);
       cursor: pointer;
       font-weight: bold;
     }
 
     input[type="file"]::file-selector-button:hover {
       background-color: #a4adbb;
+       border:#1a097a;; 
+  transform: scale(1.05);
+      /* It chnages the color of the button when cursor is pointed*/
     }
 
-    .edit-btn {
-      margin-right: 10px;
-      background-color: #cbf8e2;
+      .edit-btn {
+         font-family: Arial, sans-serif;
+      border: #1a097a;
+      padding: 8px 16px;
+      margin: 8px;
+      background-color: #f0f0f0;
       color: black;
-    }
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s ease;
+      background: linear-gradient(to right, #2193b0, #6dd5ed);
+              margin-right: 10px;
+        background-color: #cbf8e2;
+        color: rgb(88, 87, 167);
+      }
 
     .del-btn {
+      font-family: Arial, sans-serif;
+      border: #1a097a;
+      padding: 8px 16px;
+      margin: 8px;
+      background-color: #f0f0f0;
+      color: rgb(150, 8, 8);
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s ease;
+      background: linear-gradient(to right,  #ff7e5f, #feb47b);
+              margin-right: 10px;
+        background-color: #cbf8e2;
+       
       background-color: #e6bdbd;
-      color: black;
+   
     }
 
     .card-count {
@@ -402,6 +442,8 @@
         <option value="medium">Medium</option>
         <option value="hard">Hard</option>
       </select>
+      
+  
       <label for="category">Category:</label>
       <input id="category" type="text" placeholder="e.g. Math, Science">
       <button onclick="savecard()">Save</button>
@@ -572,8 +614,6 @@
     function downloadcards() {
       const blob = new Blob([JSON.stringify(flashcards)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
-
-
       const link = document.createElement("a");
       link.href = url;
       link.download = "flashcards.json";
@@ -619,7 +659,7 @@
         flashcards[editIndex] = { question, answer, difficulty, category };
         localStorage.setItem("flashcards", JSON.stringify(flashcards));
         updatePreview(); // re-render the updated cards
-        closeModal();
+                closeModal();
         showStatus("✅ Flashcard updated.");
       } else {
         alert("❌ Question and Answer cannot be empty.");
