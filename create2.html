@@ -440,7 +440,8 @@
     <!-- Left: Form Section -->
     <div class="form-section">
       <label for="deck">Deck Name:</label>
-      <select id="deck" onchange="switchDeck()"></select>
+      <!-- <select id="deck" onchange="switchDeck()"></select> -->
+      <select id="deck" onchange="updatePreview()"></select>
       <button onclick="createNewDeck()">+ New Deck</button>
       <label for="question">Question:</label>
       <input id="question" type="text" placeholder="Enter a question">
@@ -606,8 +607,8 @@
 
     function switchDeck() {
       const selectedDeck = document.getElementById("deck").value;
-      // Optionally filter flashcards by selected deck here or just keep it as is.
-      updatePreview();
+// You can add extra logic here if needed based on selectedDeck
+      updatePreview();// Refresh preview to show flashcards from the selected deck
     }
 
     // Update updatePreview to optionally filter by selected deck:
@@ -616,6 +617,11 @@
       const preview = document.getElementById("preview");
       preview.innerHTML = ""; // Clear all cards
       const selectedDeck = document.getElementById("deck").value;
+  if (!selectedDeck) {
+    showStatus("⚠️ No deck selected.", true);
+    return;
+  }
+
       flashcards.forEach((card, index) => {
         if (!selectedDeck || card.deck === selectedDeck) {
           renderCard(card, index);
@@ -730,13 +736,7 @@
       }, 1000);
     }
 
-    // Clear preview area and render all flashcards
-    function updatePreview() {
-      const preview = document.getElementById("preview");
-      preview.innerHTML = ""; // Clear all cards
-      flashcards.forEach(renderCard);// Render each card
-      updateCardCount();
-    }
+    
 
     let editIndex = null;
 
@@ -783,14 +783,28 @@
       if (!file) return;
 
       const reader = new FileReader();
-      reader.onload = function (e) {
+      reader.onload = function (event) {
         try {
-          const uploaded = JSON.parse(e.target.result);
+          const uploaded = JSON.parse(event.target.result);
           // Only accept if uploaded data is an array
           if (Array.isArray(uploaded)) {
             flashcards = flashcards.concat(uploaded);
             removeDuplicateQuestions();// no dulicate cards will be uploaded
+              // Extract deck names from uploaded cards
+        const uploadedDecks = new Set(uploaded.map(card => card.deck).filter(Boolean));
+        uploadedDecks.forEach(deck => {
+          if (!decks.includes(deck)) {
+            decks.push(deck);
+          }
+        });
             localStorage.setItem("flashcards", JSON.stringify(flashcards));
+              localStorage.setItem("decks", JSON.stringify(decks));
+              populateDecks(); // refresh deck dropdown
+                // Auto-select the first uploaded deck (optional behavior)
+        if (uploaded.length > 0 && uploaded[0].deck) {
+          document.getElementById("deck").value = uploaded[0].deck;
+        }
+
             updatePreview();
             updateCardCount();
             showStatus("✅ Flashcards uploaded successfully.");
