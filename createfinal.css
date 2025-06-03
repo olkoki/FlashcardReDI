@@ -29,6 +29,7 @@ h2 {
     color: #162227;
     text-align: left;
     padding: 0;
+    
 }
 
 /* Container for left and right sections */
@@ -65,7 +66,19 @@ h2 {
         box-shadow:  0 4px 16px rgba(0, 0, 0, 0.1);
         flex: 1 1 45%;
         max-height: 90vh;
-        overflow-y: auto;    }
+        overflow-y: auto;
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    .preview-section .sticky-header-container {
+        position: sticky;
+        top: 0;
+        margin-top: 0;
+        padding-top: 0;
+        z-index: 1;
+        background-color: #b6d5e0;
+    }
 
     /* Labels and inputs */
     label {
@@ -272,10 +285,6 @@ h2 {
         text-align: left;
     }
 
-    h2.sticky-header {
-        position: sticky;
-        background-color: #b6d5e0;
-    }
     .sticky-header {
         position: sticky;
         top: 0;
