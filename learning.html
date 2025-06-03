@@ -95,6 +95,30 @@
     </div>
     <p id="progress-text" style="margin: 0;">Card 1 of 10</p>
 
+    <!-- Mobile stash buttons (visible only on mobile) -->
+    <div class="mobile-stash-buttons">
+      <button id="known-stash-button" class="stash-button">Known</button>
+      <button id="difficult-stash-button" class="stash-button">Difficult</button>
+    </div>
+
+<!-- Known Stash Overlay -->
+<div id="known-stash-overlay" class="stash-overlay" style="display: none;">
+  <div class="stash-overlay-content">
+    <h3>Known</h3>
+    <ul id="known-list-overlay"></ul>
+    <button id="undo-known">Undo</button>
+  </div>
+</div>
+
+<!-- Difficult Stash Overlay -->
+<div id="difficult-stash-overlay" class="stash-overlay" style="display: none;">
+  <div class="stash-overlay-content">
+    <h3>Difficult</h3>
+    <ul id="difficult-list-overlay"></ul>
+    <button id="undo-difficult">Undo</button>
+  </div>
+</div>
+
 
     <script src="learning.js"></script>
     <script>

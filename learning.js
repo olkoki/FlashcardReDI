@@ -185,10 +185,34 @@ const difficultList = document.getElementById("difficult-list");
 
 
 // Track known and difficult cards
-let knownCards = [];
-let difficultCards = [];
+let knownCards = JSON.parse(localStorage.getItem("knownCards")) || []; //NEW
+let difficultCards = JSON.parse(localStorage.getItem("difficultCards")) || [];//NEW
 let knownUndoStack = [];
 let difficultUndoStack = [];
+
+function saveStashesToLocalStorage() {
+  localStorage.setItem("knownCards", JSON.stringify(knownCards));
+  localStorage.setItem("difficultCards", JSON.stringify(difficultCards));
+}
+
+function rebuildStashLists() {
+  knownList.innerHTML = "";
+  difficultList.innerHTML = "";
+
+  knownCards.forEach(card => {
+    const listItem = document.createElement("li");
+    listItem.textContent = card.question;
+    knownList.appendChild(listItem);
+  });
+
+  difficultCards.forEach(card => {
+    const listItem = document.createElement("li");
+    listItem.textContent = card.question;
+    difficultList.appendChild(listItem);
+  });
+
+  updateUndoButtonsVisibility();
+}
 
 function updateUndoButtons() {
   document.getElementById("undo-known").disabled = knownUndoStack.length === 0;
@@ -235,6 +259,7 @@ function addToStash(card, type) {
   if (currentIndex >= filteredCards.length) currentIndex = 0;
   showCard(currentIndex);
 
+  saveStashesToLocalStorage();
   updateUndoButtons(); 
   updateUndoButtonsVisibility();
   updateProgress();
@@ -279,11 +304,12 @@ document.getElementById("undo-known").addEventListener("click", () => {
   filteredCards.splice(currentIndex, 0, last.card);
   showCard(currentIndex);
 
-  //Reset flip NEW
+  //Reset flip
   const cardContainer = document.querySelector(".card-container");
   cardContainer.style.transform = "";
   cardContainer.classList.remove("flip");
 
+  saveStashesToLocalStorage();
   updateUndoButtons(); 
   updateUndoButtonsVisibility();
   updateProgress();
@@ -308,6 +334,7 @@ document.getElementById("undo-difficult").addEventListener("click", () => {
   cardContainer.style.transform = "";
   cardContainer.classList.remove("flip");
 
+  saveStashesToLocalStorage();
   updateUndoButtons();
   updateUndoButtonsVisibility();
   updateProgress();
@@ -333,6 +360,9 @@ startOverButton.addEventListener("click", () => {
   difficultList.innerHTML = "";
   endButtonsContainer.style.display = "none";
 
+  localStorage.removeItem("knownCards");
+  localStorage.removeItem("difficultCards");
+
   markKnownButton.style.display = 'inline-block';
   markDifficultButton.style.display = 'inline-block';
   updateUndoButtons();
@@ -340,6 +370,9 @@ startOverButton.addEventListener("click", () => {
   showCard(currentIndex);
 });
 endButtonsContainer.appendChild(startOverButton);
+
+// On page load, rebuild stashes so UI reflects localStorage data
+rebuildStashLists();
 
 // Create New button
 const createButton = document.createElement("button");
@@ -385,6 +418,32 @@ inputWrapper.appendChild(searchIcon);
 inputWrapper.appendChild(searchInput);
 searchGroup.appendChild(searchLabel);
 searchGroup.appendChild(inputWrapper);
+
+const mediaQuery = window.matchMedia('(max-width: 767px)');
+const stashButtons = document.querySelectorAll('.stash-button');
+const stashOverlays = document.querySelectorAll('.stash-overlay');
+
+function setupOverlayHandlers() {
+  stashButtons.forEach((button, index) => {
+    button.addEventListener('click', () => {
+      stashOverlays[index].style.display = 'flex';
+    });
+  });
+
+  stashOverlays.forEach((overlay) => {
+    overlay.addEventListener('click', (event) => {
+      if (event.target === overlay) {
+        overlay.style.display = 'none';
+      }
+    });
+  });
+}
+
+if (mediaQuery.matches) setupOverlayHandlers();
+mediaQuery.addEventListener('change', (e) => {
+  if (e.matches) setupOverlayHandlers();
+});
+
 
 document.querySelector(".filters").appendChild(searchGroup);
 
