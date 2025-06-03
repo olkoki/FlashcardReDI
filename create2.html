@@ -8,6 +8,7 @@
   <title>Flashcard Creator</title>
   <!-- <link rel="stylesheet" href="createnew1.css"> -->
   <link rel="icon" href="./heart.jpg" type="image/jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
   <style>
     body {
       background-color: #eef;
@@ -18,13 +19,15 @@
     }
 
     h1 {
-      font-family: Arial, sans-serif;
+      font-family: 'Poppins', sans-serif;
       text-align: center;
       padding: 4px 0;
       margin: 0 0;
       background: #eef;
       color: #8aa2ce;
-      font-size: 24px;
+      font-size: 26px;
+      font-weight: 700;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     }
 
     h2 {
@@ -58,19 +61,16 @@
 
     /* Right preview section */
     .preview-section {
-
       background: #8aa2ce;
       margin-left: 10px;
       padding: 10px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
       flex: 1;
       max-height: 95vh;
       border: 1px solid #864508;
       display: flex;
       flex-direction: column;
-
     }
 
     /* Labels and inputs */
@@ -103,18 +103,21 @@
     /* Buttons */
     button {
       font-family: Arial, sans-serif;
-      border: #1a097a;
       padding: 8px 16px;
       margin: 8px;
-      background-color: #f0f0f0;
-      color: rgb(236, 237, 243);
+      border: #1a097a;
       border-radius: 5px;
       cursor: pointer;
       font-weight: bold;
+      font-size: 14px;
       transition: transform 0.2s ease;
       background: linear-gradient(to right, #53899e, #210bb3);
-      /* Two-color gradient */
-      font-size: 14px;
+      color: #f0f0f0;
+
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+
+
     }
 
     button:hover {
@@ -184,7 +187,8 @@
       color: rgb(230, 224, 224);
       cursor: pointer;
       font-weight: bold;
-
+      font-size: 14px;
+      width: 250px;
     }
 
     input[type="file"]::file-selector-button {
@@ -195,6 +199,7 @@
       color: rgb(238, 232, 232);
       cursor: pointer;
       font-weight: bold;
+      font-size: 14px;
     }
 
     input[type="file"]::file-selector-button:hover {
@@ -423,6 +428,32 @@
     .close:hover {
       color: black;
     }
+
+    .difficulty-easy {
+      color: green;
+      font-weight: bold;
+    }
+
+    .difficulty-medium {
+      color: orange;
+      font-weight: bold;
+    }
+
+    .difficulty-hard {
+      color: red;
+      font-weight: bold;
+    }
+
+    .upload-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      /* spacing between label and input */
+      justify-content: flex-start;
+      /* align left */
+      margin-bottom: 10px;
+      /* optional spacing from other form items */
+    }
   </style>
 </head>
 
@@ -443,6 +474,7 @@
       <!-- <select id="deck" onchange="switchDeck()"></select> -->
       <select id="deck" onchange="updatePreview()"></select>
       <button onclick="createNewDeck()">+ New Deck</button>
+      <button onclick="deleteDeck()">− Delete Deck</button>
       <label for="question">Question:</label>
       <input id="question" type="text" placeholder="Enter a question">
       <label for="answer">Answer:</label>
@@ -461,7 +493,11 @@
       <button onclick="downloadcards()">Download</button>
       <button onclick="removeDuplicateQuestions()">Remove Duplicates</button>
       <!-- Optional file upload -->
-      <input type="file" id="upload" onchange="uploadCards(event)" accept=".json">
+      <div class="upload-wrapper">
+        <label for="upload">Upload json file:</label>
+        <input type="file" id="upload" onchange="uploadCards(event)" accept=".json">
+      </div>
+
       <div id="status"></div>
     </div>
 
@@ -493,10 +529,8 @@
         <option value="medium">Medium</option>
         <option value="hard">Hard</option>
       </select>
-
       <label for="editCategory">Category:</label>
       <input type="text" id="editCategory">
-
       <button onclick="saveEdit()">Save Changes</button>
     </div>
   </div>
@@ -607,7 +641,7 @@
 
     function switchDeck() {
       const selectedDeck = document.getElementById("deck").value;
-// You can add extra logic here if needed based on selectedDeck
+      // You can add extra logic here if needed based on selectedDeck
       updatePreview();// Refresh preview to show flashcards from the selected deck
     }
 
@@ -617,10 +651,10 @@
       const preview = document.getElementById("preview");
       preview.innerHTML = ""; // Clear all cards
       const selectedDeck = document.getElementById("deck").value;
-  if (!selectedDeck) {
-    showStatus("⚠️ No deck selected.", true);
-    return;
-  }
+      if (!selectedDeck) {
+        showStatus("⚠️ No deck selected.", true);
+        return;
+      }
 
       flashcards.forEach((card, index) => {
         if (!selectedDeck || card.deck === selectedDeck) {
@@ -674,6 +708,7 @@
 
       const d = document.createElement("p");
       d.innerHTML = `<strong>Difficulty:</strong> ${card.difficulty}`;
+      d.classList.add(`difficulty-${card.difficulty}`); // Add class based on difficulty
 
       const c = document.createElement("p");
       c.innerHTML = `<strong>Category:</strong> ${card.category || "N/A"}`;
@@ -736,7 +771,7 @@
       }, 1000);
     }
 
-    
+
 
     let editIndex = null;
 
@@ -790,20 +825,20 @@
           if (Array.isArray(uploaded)) {
             flashcards = flashcards.concat(uploaded);
             removeDuplicateQuestions();// no dulicate cards will be uploaded
-              // Extract deck names from uploaded cards
-        const uploadedDecks = new Set(uploaded.map(card => card.deck).filter(Boolean));
-        uploadedDecks.forEach(deck => {
-          if (!decks.includes(deck)) {
-            decks.push(deck);
-          }
-        });
+            // Extract deck names from uploaded cards
+            const uploadedDecks = new Set(uploaded.map(card => card.deck).filter(Boolean));
+            uploadedDecks.forEach(deck => {
+              if (!decks.includes(deck)) {
+                decks.push(deck);
+              }
+            });
             localStorage.setItem("flashcards", JSON.stringify(flashcards));
-              localStorage.setItem("decks", JSON.stringify(decks));
-              populateDecks(); // refresh deck dropdown
-                // Auto-select the first uploaded deck (optional behavior)
-        if (uploaded.length > 0 && uploaded[0].deck) {
-          document.getElementById("deck").value = uploaded[0].deck;
-        }
+            localStorage.setItem("decks", JSON.stringify(decks));
+            populateDecks(); // refresh deck dropdown
+            // Auto-select the first uploaded deck (optional behavior)
+            if (uploaded.length > 0 && uploaded[0].deck) {
+              document.getElementById("deck").value = uploaded[0].deck;
+            }
 
             updatePreview();
             updateCardCount();
@@ -848,6 +883,44 @@
       const count = flashcards.filter(card => card.deck === selectedDeck).length;
       document.getElementById("card-count").textContent = `Total Cards: ${count}`;
     }
+
+    function deleteDeck() {
+      const deckSelect = document.getElementById("deck");
+      const selectedDeck = deckSelect.value;
+
+      if (!selectedDeck) {
+        alert("Please select a deck to delete.");
+        return;
+      }
+
+      // Confirm deletion
+      if (!confirm(`Are you sure you want to delete the deck "${selectedDeck}"? This will also delete all flashcards in this deck.`)) {
+        return;
+      }
+
+      // Remove deck from decks array
+      decks = decks.filter(deck => deck !== selectedDeck);
+      localStorage.setItem("decks", JSON.stringify(decks));
+
+      // Remove all flashcards belonging to this deck
+      flashcards = flashcards.filter(card => card.deck !== selectedDeck);
+      localStorage.setItem("flashcards", JSON.stringify(flashcards));
+
+      // Refresh deck dropdown and preview
+      populateDecks();
+
+      // If decks exist, select the first one, else reset selection
+      if (decks.length > 0) {
+        deckSelect.value = decks[0];
+      } else {
+        deckSelect.value = "";
+      }
+
+      updatePreview();
+      updateCardCount();
+      showStatus(`✅ Deck "${selectedDeck}" and its flashcards deleted.`);
+    }
+
     // Load and preview on page load
     updatePreview();
 
