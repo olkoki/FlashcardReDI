@@ -1,0 +1,114 @@
+[
+  {
+    "question": "What keyword is used to declare a variable in JavaScript?",
+    "answer": "var, let, or const",
+    "difficulty": "easy",
+    "category": "JavaScript"
+  },
+  {
+    "question": "How do you write a comment in JavaScript?",
+    "answer": "// This is a comment",
+    "difficulty": "easy",
+    "category": "JavaScript"
+  },
+  {
+    "question": "What does NaN stand for in JavaScript?",
+    "answer": "Not a Number",
+    "difficulty": "medium",
+    "category": "JavaScript"
+  },
+  {
+    "question": "What does \"HTML\" stand for?",
+    "answer": "HyperText Markup Language",
+    "difficulty": "medium",
+    "category": "Technology"
+  },
+  {
+    "question": "When was the movie the Titanic released?",
+    "answer": "1997",
+    "difficulty": "medium",
+    "category": "Movie"
+  },
+  {
+    "question": "How many times has England won the men's football World Cup?",
+    "answer": "Once (1966)",
+    "difficulty": "easy",
+    "category": "Sports"
+  },
+  {
+    "question": "What are the five colours of the Olympic rings?",
+    "answer": "Blue, Yellow, Black, Green and Red",
+    "difficulty": "medium",
+    "category": "Sports"
+  },
+  {
+    "question": "Which European city hosted the 1936 Summer Olympics?",
+    "answer": "Berlin",
+    "difficulty": "medium",
+    "category": "Sports History"
+  },
+  {
+    "question": "How many letters are there in the English alphabet?",
+    "answer": "26",
+    "difficulty": "easy",
+    "category": "General Knowledge"
+  },
+  {
+    "question": "What river runs through Egypt?",
+    "answer": "The Nile",
+    "difficulty": "medium",
+    "category": "Geography"
+  },
+  {
+    "question": "Name a country that borders Germany.",
+    "answer": "Poland, France, etc.",
+    "difficulty": "medium",
+    "category": "Geography"
+  },
+  {
+    "question": "Which country has the most time zones?",
+    "answer": "France",
+    "difficulty": "hard",
+    "category": "Geography"
+  },
+  {
+    "question": "What is the smallest country in the world?",
+    "answer": "Vatican City",
+    "difficulty": "hard",
+    "category": "Geography"
+  },
+  {
+    "question": "What is the main gas in Earth's atmosphere?",
+    "answer": "Nitrogen",
+    "difficulty": "hard",
+    "category": "Science"
+  },
+  {
+    "question": "What was the name of the ship that sank in 1912?",
+    "answer": "Titanic",
+    "difficulty": "hard",
+    "category": "History"
+  },
+  {
+    "question": "What does CPU stand for?",
+    "answer": "Central Processing Unit",
+    "difficulty": "easy",
+    "category": "Computer Science"
+  },
+  {
+    "question": "What is the capital of France?",
+    "answer": "Paris"
+  },
+  {
+    "question": "What is the largest planet in our solar system?",
+    "answer": "Jupiter"
+  },
+  {
+    "question": "Who painted the Mona Lisa?",
+    "answer": "Leonardo da Vinci"
+  },
+  {
+    "question": "What is the chemical symbol for Gold?",
+    "answer": "Au"
+  }
+]
