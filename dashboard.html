@@ -112,33 +112,46 @@
   text-align: center;
 }
 
-/* Style for each letter */
+.glow-word {
+  display: inline-block;
+  text-shadow:
+    0 0 3px rgba(241, 90, 34, 0.3),
+    0 0 6px rgba(241, 90, 34, 0.2);
+  animation: glowPulse 2.5s ease-in-out infinite alternate;
+  margin-right: 0.2em;
+}
+
 .glow-letter {
   display: inline-block;
   transition: transform 0.3s ease;
   text-shadow:
-    0 0 3px rgba(241, 90, 34, 0.4),
-    0 0 6px rgba(241, 90, 34, 0.3),
-    0 0 9px rgba(241, 90, 34, 0.2);
+    0 0 3px rgba(241, 90, 34, 0.3),
+    0 0 6px rgba(241, 90, 34, 0.2);
   animation: glowPulse 2.5s ease-in-out infinite alternate;
 }
+
+.glow-letter:nth-child(even) {
+  transform: rotate(5deg);
+}
+
+.glow-letter:nth-child(odd) {
+  transform: rotate(-5deg);
+}
+
 .fun-title:hover .glow-letter {
   transform: rotate(0deg) !important;
 }
 
-/* Glow pulse animation */
 @keyframes glowPulse {
   0% {
     text-shadow:
       0 0 3px rgba(241, 90, 34, 0.2),
-      0 0 6px rgba(241, 90, 34, 0.15),
-      0 0 9px rgba(241, 90, 34, 0.1);
+      0 0 6px rgba(241, 90, 34, 0.1);
   }
   100% {
     text-shadow:
-      0 0 6px rgba(241, 90, 34, 0.5),
-      0 0 10px rgba(241, 90, 34, 0.4),
-      0 0 14px rgba(241, 90, 34, 0.3);
+      0 0 5px rgba(241, 90, 34, 0.4),
+      0 0 8px rgba(241, 90, 34, 0.2);
   }
 }
 
