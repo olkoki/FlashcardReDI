@@ -23,7 +23,9 @@
       <i class="fa fa-bars"></i>
     </a>
   </div>
-  <h1>Create a Lovely Flashcards</h1>
+
+  <h1 id="fun-title" class="fun-title" data-text="Lovely Flashcards">Lovely Flashcards</h1>
+  <h1>Create Your Deck</h1>
   <div class="container">
     <!-- Left: Form Section -->
     <div class="form-section">
@@ -57,7 +59,7 @@
     <div class="preview-section">
       <h2 class="sticky-header">Flashcard Preview</h2>
       <p class="card-count sticky-header" id="card-count">Total Cards: 0</p> <!-- Counter -->
-      <div class="card-container" id="preview"></div>
+      <div class="card-container all-decks-preview" id="preview"></div>
     </div>
   </div>
   <!-- Edit Modal -->
@@ -83,6 +85,21 @@
     </div>
   </div>
   <script src="createfinal.js"></script>
-</body>
+  <script>
+    const title = document.getElementById("fun-title");
+      const text = title.textContent;
+      title.textContent = "";
 
+      const tiltAmount = 5;
+
+      for (let i = 0; i < text.length; i++) {
+        const span = document.createElement("span");
+        span.textContent = text[i];
+        const rotation = (i % 2 === 0) ? tiltAmount : -tiltAmount;
+        span.style.transform = `rotate(${rotation}deg)`;
+        span.classList.add("glow-letter");
+        title.appendChild(span);
+      }
+  </script>
+</body>
 </html>

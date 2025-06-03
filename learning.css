@@ -1,43 +1,5 @@
-body{
-  font-family:Arial, sans-serif ;
-  text-align: center;
-  background-color: #eef;
-  padding: 40px;
-}
 
-.card{
-  width: 600px;
-  height: 200px;
-  margin: 20px auto;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 24px;
-  box-shadow: 2px 2px 12px rgba(0,0,0,0.1);
-  transition: background-color 0.3s ease, border 0.3s ease;
 
-}
-
-/* Difficulty-based styles */
-.card.easy {
-  background-color: #d4edda;
-  border: 2px solid green;
-}
-.card.medium {
-  background-color: #fff3cd;
-  border: 2px solid orange;
-}
-.card.hard {
-  background-color: #f8d7da;
-  border: 2px solid red;
-}
-.hidden {
-  display: none;
-}
-
-/* --- START: Merged from <style> in learning.html --- */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
@@ -149,16 +111,20 @@ main {
   margin: 0 auto;
   background-color: #fff;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 2px 2px 12px rgba(0,0,0,0.1);
   padding: 2rem;
   width: 100%;
+  height: 200px;
+  display: flex;
   max-width: 500px;
   font-size: 24px;
   text-align: center;
   word-wrap: break-word;
   transition: transform 1s ease;
   transform-style: preserve-3d;
-
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .card.flip {
