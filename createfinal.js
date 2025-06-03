@@ -97,14 +97,14 @@ function updatePreview() {
   const preview = document.getElementById("preview");
   preview.innerHTML = ""; // Clear all cards
   const selectedDeck = document.getElementById("deck").value;
-  if (!selectedDeck) {
-    showStatus("⚠️ No deck selected.", true);
-    return;
-  }
+  preview.innerHTML = ""; // Clear all cards
 
-  flashcards.forEach((card, index) => {
-    if (!selectedDeck || card.deck === selectedDeck) {
-      renderCard(card, index);
+  flashcards.forEach((card, actualIndex) => {
+    // if (!selectedDeck || card.deck === selectedDeck) {
+    //   renderCard(card, index);
+    // if (card.deck === selectedDeck) {
+    if (selectedDeck === "Default" || card.deck === selectedDeck) {
+      renderCard(card, actualIndex); // Now index is correct
     }
   });
   updateCardCount();
@@ -185,21 +185,45 @@ function renderCard(card, index) {
   const delBtn = document.createElement("button");
   delBtn.textContent = "🗑️ Delete";
   delBtn.className = "del-btn"; // Apply your CSS styles
-  // Delete button click handler
-  delBtn.onclick = function () {
-    const confirmDelete = confirm("Are you sure you want to delete this card?");
-    if (confirmDelete) {
-      cardDiv.style.opacity = "0"; // Start fade out
-      setTimeout(() => {
-        flashcards.splice(index, 1);
-        localStorage.setItem("flashcards", JSON.stringify(flashcards));
-        refreshDecksFromFlashcards();
-        updatePreview();
-        updateCardCount();
-        showStatus("✅ Card deleted successfully."); // <-- Status message here
-      }, 300); // Wait for animation
-    }
-  };
+
+  (function (currentIndex) {
+    delBtn.onclick = function () {
+      const confirmDelete = confirm("Are you sure you want to delete this card?");
+      if (confirmDelete) {
+        cardDiv.style.opacity = "0";
+        setTimeout(() => {
+          const deckSelect = document.getElementById("deck");
+          const selectedDeck = deckSelect.value;
+
+          // Remove the card from flashcards
+          flashcards.splice(currentIndex, 1);
+          localStorage.setItem("flashcards", JSON.stringify(flashcards));
+
+          // Refresh the decks list based on remaining cards
+          refreshDecksFromFlashcards();
+
+          // Check if the selected deck still has cards
+          const deckHasCards = flashcards.some(card => card.deck === selectedDeck);
+
+          if (!deckHasCards) {
+            // Remove the deck if it is not "Default" and exists in decks list
+            if (selectedDeck !== "Default" && decks.includes(selectedDeck)) {
+              decks = decks.filter(deck => deck !== selectedDeck);
+              localStorage.setItem("decks", JSON.stringify(decks));
+              populateDecks(); // Refresh dropdown
+            }
+            deckSelect.value = "Default"; // Switch to Default deck if no cards left
+          } else {
+            deckSelect.value = selectedDeck; // Keep current deck selected if it still has cards
+          }
+
+          updatePreview();
+          updateCardCount();
+          showStatus("✅ Card deleted successfully.");
+        }, 300);
+      }
+    };
+  })(index);
 
   // Append all elements to card container
   cardDiv.appendChild(q);
@@ -288,10 +312,9 @@ function uploadCards(event) {
         localStorage.setItem("flashcards", JSON.stringify(flashcards));
         localStorage.setItem("decks", JSON.stringify(decks));
         populateDecks(); // refresh deck dropdown
-        // Auto-select the first uploaded deck (optional behavior)
-        if (uploaded.length > 0 && uploaded[0].deck) {
-          document.getElementById("deck").value = uploaded[0].deck;
-        }
+
+        document.getElementById("deck").value = "Default";
+
 
         updatePreview();
         updateCardCount();
@@ -327,9 +350,15 @@ function removeDuplicateQuestions() {
   showStatus("✅ Duplicates removed.");
 }
 
+
 function updateCardCount() {
   const selectedDeck = document.getElementById("deck").value;
-  const count = flashcards.filter(card => card.deck === selectedDeck).length;
+
+  // If "Default", count all flashcards
+  const count = selectedDeck === "Default"
+    ? flashcards.length
+    : flashcards.filter(card => card.deck === selectedDeck).length;
+
   document.getElementById("card-count").textContent = `Total Cards: ${count}`;
 }
 
