@@ -8,13 +8,15 @@
   <link rel="stylesheet" href="fully-merged-learning.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="./heart.jpg" type="image/jpg">
 
 </head>
 <body>
   <div class="topnav" id="myTopnav">
-    <a href="createnew.html">Create a Deck</a>
+    <a href="createfinal.html">Create a Deck</a>
     <a href="learning.html" class="active">Learning</a>
-    <span class="nav-title"><a href='dashboard.html'>Lovely Flashcards</a></span>
+    <span class="nav-title"><a href="dashboard.html">Lovely Flashcards</a></span>
+    <!-- <p>Lovely Flashcards</p> -->
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
       <i class="fa fa-bars"></i>
     </a>
@@ -48,37 +50,41 @@
     </div>
 
 <div class="card-container">
-  <button id="prev" class="arrow-button left-arrow">&larr;</button>
-  <div class="card" id="card">
+  
+  <div class="card carousel" id="card">
     <div id="question" class="frontface"></div>
     <div id="answer" class="backface"></div>
     <div id="end-message" class="hidden">
       <p>🎉 You’ve reached the end of the deck!</p>
     </div>
   </div>
-  <button id="next" class="arrow-button right-arrow">&rarr;</button>
+  
   <div class="buttons-container">
     <button id="mark-known">Learned!</button>
     <button id="mark-difficult">Still learning</button>
   </div>
-  <button id="shuffle" class="icon-button">🎲</button>
+  <div class="bottom-controls">
+    <button id="prev" class="arrow-button left-arrow">&larr;</button>
+    <button id="shuffle" class="icon-button">🎲</button>
+    <button id="next" class="arrow-button right-arrow">&rarr;</button>
+  </div>
 </div>
 
   </main>
 
-   <div id="known-stash" class="stash left">
-  <h3>Known</h3>
-  <ul id="known-list"></ul>
-  <button id="undo-known">Undo</button>
-</div>
-
-<div id="difficult-stash" class="stash right">
-  <h3>Difficult</h3>
-  <ul id="difficult-list"></ul>
-  <button id="undo-difficult">Undo</button>
-</div>
-
-
+  <div class="stash-container">
+    <div id="known-stash" class="stash left">
+      <h3>Known</h3>
+      <ul id="known-list"></ul>
+      <button id="undo-known">Undo</button>
+    </div>
+  
+    <div id="difficult-stash" class="stash right">
+      <h3>Difficult</h3>
+      <ul id="difficult-list"></ul>
+      <button id="undo-difficult">Undo</button>
+    </div>
+  </div>
 
     <br>
     <br>
@@ -88,6 +94,7 @@
       <div class="progress-bar" id="progress-bar"></div>
     </div>
     <p id="progress-text" style="margin: 0;">Card 1 of 10</p>
+
 
     <script src="learning.js"></script>
     <script>

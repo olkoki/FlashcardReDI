@@ -1,3 +1,19 @@
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', event => {
+    event.preventDefault();
+    const target = link.getAttribute('href').substring(1);
+    // Hide all sections
+    document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+
+    // Show the target section
+    document.getElementById(target).style.display = 'block';
+
+    // Update active class on nav links
+    document.querySelectorAll('.topnav a').forEach(a => a.classList.remove('active'));
+    link.classList.add('active');
+  });
+});
+
 // Load flashcards from localStorage
 
 let allCards = JSON.parse(localStorage.getItem("flashcards")) || [];
@@ -130,6 +146,7 @@ nextButton.addEventListener("click", () =>{
 if(filteredCards.length===0)return;
 currentIndex=(currentIndex +1) % filteredCards.length;
 showCard(currentIndex);
+updateCarousel();
 });
 
 //Previous
@@ -138,6 +155,7 @@ prevButton.addEventListener("click", () => {
   if (filteredCards.length === 0) return;
   currentIndex = (currentIndex - 1 + filteredCards.length) % filteredCards.length;
   showCard(currentIndex);
+  updateCarousel();
 });
 
 // Shuffle cards
@@ -370,21 +388,7 @@ searchGroup.appendChild(inputWrapper);
 
 document.querySelector(".filters").appendChild(searchGroup);
 
-let skipStack = [];
 
-skipButton.addEventListener("click", () => {
-  if (filteredCards.length === 0) return;
-  skipStack.push(filteredCards[currentIndex]);
-  currentIndex = (currentIndex + 1) % filteredCards.length;
-  showCard(currentIndex);
-});
-
-document.getElementById("undo-skip").addEventListener("click", () => {
-  const lastSkipped = skipStack.pop();
-  if (!lastSkipped) return;
-  filteredCards.splice(currentIndex, 0, lastSkipped);
-  showCard(currentIndex);
-});
 
 
 
