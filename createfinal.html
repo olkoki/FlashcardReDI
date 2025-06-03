@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Flashcard Creator</title>
+  <link rel="stylesheet" href="createfinal.css">
+  <link rel="icon" href="./heart.jpg" type="image/jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+<body>
+  <div class="topnav" id="myTopnav">
+    <a href="createnew3.html" class="active">Create a Deck</a>
+    <a href="learning.html">Learning</a>
+    <span class="nav-title"><a href="dashboard.html">Lovely Flashcards</a></span>
+    <!-- <p>Lovely Flashcards</p> -->
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+  <h1>Create a Lovely Flashcards</h1>
+  <div class="container">
+    <!-- Left: Form Section -->
+    <div class="form-section">
+      <label for="deck">Deck Name:</label>
+      <select id="deck" onchange="updatePreview()"></select>
+      <button onclick="createNewDeck()">+ New Deck</button>
+      <button onclick="deleteDeck()">− Delete Deck</button>
+      <label for="question">Question:</label>
+      <input id="question" type="text" placeholder="Enter a question">
+      <label for="answer">Answer:</label>
+      <input id="answer" type="text" placeholder="Enter a answer">
+      <label for="difficulty">Difficulty:</label>
+      <select id="difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+      <label for="category">Category:</label>
+      <input id="category" type="text" placeholder="e.g. Math, Science">
+      <button onclick="savecard()">Save</button>
+      <button onclick="downloadcards()">Download</button>
+      <button onclick="removeDuplicateQuestions()">Remove Duplicates</button>
+      <!-- Optional file upload -->
+      <div class="upload-wrapper">
+        <label for="upload">Upload json file:</label>
+        <input type="file" id="upload" onchange="uploadCards(event)" accept=".json">
+      </div>
+      <div id="status"></div>
+    </div>
+    <!-- Preview Section -->
+    <div class="preview-section">
+      <h2 class="sticky-header">Flashcard Preview</h2>
+      <p class="card-count sticky-header" id="card-count">Total Cards: 0</p> <!-- Counter -->
+      <div class="card-container" id="preview"></div>
+    </div>
+  </div>
+  <!-- Edit Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h3>Edit Flashcard</h3>
+      <label for="editDeck">Deck:</label>
+      <select id="editDeck"></select>
+      <label for="editQuestion">Question:</label>
+      <input type="text" id="editQuestion">
+      <label for="editAnswer">Answer:</label>
+      <input type="text" id="editAnswer">
+      <label for="editDifficulty">Difficulty:</label>
+      <select id="editDifficulty">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+      <label for="editCategory">Category:</label>
+      <input type="text" id="editCategory">
+      <button onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+  <script src="creatfinal.js"></script>
+</body>
+
+</html>
