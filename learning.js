@@ -470,11 +470,3 @@ window.addEventListener('resize', () => {
     title.innerHTML = letters.map(letterArray => letterArray.map(letter => `<span class="glow-letter">${letter}</span>`).join('')).join(' ');
   }
 });
-
-
-
-
-
-
-
-//Prevent firing multiple times/ hover effect
