@@ -236,6 +236,28 @@ function renderCard(card, index) {
 
   //   preview.appendChild(cardDiv); (to add cards at the end)
 }
+function deleteAllCards() {
+  if (confirm("Are you sure you want to delete ALL flashcards from all decks? This cannot be undone.")) {
+    // Loop through all localStorage keys and remove only flashcard decks
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+      const key = localStorage.key(i);
+      // Optional: Add a prefix check if decks are stored with a pattern like `deck_`
+      // if (key.startsWith("deck_")) {
+      localStorage.removeItem(key);
+      // }
+    }
+
+    // Clear preview section visually
+    document.getElementById("preview").innerHTML = "";
+    document.getElementById("card-count").textContent = "Total Cards: 0";
+
+    // Optionally reset the deck dropdown
+    const deckSelect = document.getElementById("deck");
+    deckSelect.innerHTML = "";
+
+    alert("All flashcards from all decks have been deleted.");
+  }
+}
 
 // Download flashcards as a JSON file
 function downloadcards() {
