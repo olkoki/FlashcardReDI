@@ -1,20 +1,4 @@
 
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.addEventListener('click', event => {
-    event.preventDefault();
-    const target = link.getAttribute('href').substring(1);
-    // Hide all sections
-    document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
-
-    // Show the target section
-    document.getElementById(target).style.display = 'block';
-
-    // Update active class on nav links
-    document.querySelectorAll('.topnav a').forEach(a => a.classList.remove('active'));
-    link.classList.add('active');
-  });
-});
-
 let decks = JSON.parse(localStorage.getItem("decks")) || ["Default"];
 let flashcards = JSON.parse(localStorage.getItem("flashcards")) || [];
 
