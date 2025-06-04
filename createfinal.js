@@ -429,3 +429,27 @@ function myFunction() {
     x.className = "topnav";
   }
 }
+
+// JavaScript code to split text into individual words or letters
+const title = document.querySelector('.fun-title');
+const text = title.dataset.text;
+const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+const words = text.split(' ');
+const letters = words.map(word => word.split(''));
+
+if (isMobile) {
+  title.innerHTML = words.map(word => `<span class="glow-word">${word}</span>`).join(' ');
+} else {
+  title.innerHTML = letters.map(letterArray => letterArray.map(letter => `<span class="glow-letter">${letter}</span>`).join('')).join(' ');
+}
+
+// Update on window resize
+window.addEventListener('resize', () => {
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  if (isMobile) {
+    title.innerHTML = words.map(word => `<span class="glow-word">${word}</span>`).join(' ');
+  } else {
+    title.innerHTML = letters.map(letterArray => letterArray.map(letter => `<span class="glow-letter">${letter}</span>`).join('')).join(' ');
+  }
+});
