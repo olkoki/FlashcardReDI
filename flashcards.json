@@ -3,112 +3,157 @@
     "question": "What keyword is used to declare a variable in JavaScript?",
     "answer": "var, let, or const",
     "difficulty": "easy",
-    "category": "JavaScript"
+    "category": "Programming",
+    "deck": "JavaScript Basics"
   },
   {
     "question": "How do you write a comment in JavaScript?",
     "answer": "// This is a comment",
     "difficulty": "easy",
-    "category": "JavaScript"
+    "category": "Coding",
+    "deck": "JavaScript Basics"
   },
   {
     "question": "What does NaN stand for in JavaScript?",
     "answer": "Not a Number",
     "difficulty": "medium",
-    "category": "JavaScript"
+    "category": "Programming Concepts",
+    "deck": "JavaScript Intermediate"
   },
   {
     "question": "What does \"HTML\" stand for?",
     "answer": "HyperText Markup Language",
     "difficulty": "medium",
-    "category": "Technology"
+    "category": "Web Development",
+    "deck": "Tech Fundamentals"
   },
   {
     "question": "When was the movie the Titanic released?",
     "answer": "1997",
     "difficulty": "medium",
-    "category": "Movie"
+    "category": "Cinema",
+    "deck": "Film History"
   },
   {
     "question": "How many times has England won the men's football World Cup?",
     "answer": "Once (1966)",
     "difficulty": "easy",
-    "category": "Sports"
+    "category": "Football",
+    "deck": "Sports Trivia"
   },
   {
     "question": "What are the five colours of the Olympic rings?",
     "answer": "Blue, Yellow, Black, Green and Red",
     "difficulty": "medium",
-    "category": "Sports"
+    "category": "Olympics",
+    "deck": "Sports Trivia"
   },
   {
     "question": "Which European city hosted the 1936 Summer Olympics?",
     "answer": "Berlin",
     "difficulty": "medium",
-    "category": "Sports History"
+    "category": "Olympic History",
+    "deck": "Sports Events"
   },
   {
     "question": "How many letters are there in the English alphabet?",
     "answer": "26",
     "difficulty": "easy",
-    "category": "General Knowledge"
+    "category": "Language",
+    "deck": "General Facts"
   },
   {
     "question": "What river runs through Egypt?",
     "answer": "The Nile",
     "difficulty": "medium",
-    "category": "Geography"
+    "category": "Rivers",
+    "deck": "World Geography"
   },
   {
     "question": "Name a country that borders Germany.",
     "answer": "Poland, France, etc.",
     "difficulty": "medium",
-    "category": "Geography"
+    "category": "European Geography",
+    "deck": "World Geography"
   },
   {
     "question": "Which country has the most time zones?",
     "answer": "France",
     "difficulty": "hard",
-    "category": "Geography"
+    "category": "Geopolitics",
+    "deck": "World Geography"
   },
   {
-    "question": "What is the smallest country in the world?",
+    "question": "Which is the smallest country in the world?",
     "answer": "Vatican City",
     "difficulty": "hard",
-    "category": "Geography"
+    "category": "Countries",
+    "deck": "World Geography"
   },
   {
     "question": "What is the main gas in Earth's atmosphere?",
     "answer": "Nitrogen",
     "difficulty": "hard",
-    "category": "Science"
+    "category": "Earth Science",
+    "deck": "Scientific Facts"
   },
   {
     "question": "What was the name of the ship that sank in 1912?",
     "answer": "Titanic",
     "difficulty": "hard",
-    "category": "History"
+    "category": "Maritime History",
+    "deck": "Historical Events"
   },
   {
     "question": "What does CPU stand for?",
     "answer": "Central Processing Unit",
     "difficulty": "easy",
-    "category": "Computer Science"
+    "category": "Computer Hardware",
+    "deck": "Tech Fundamentals"
   },
+ 
+  
   {
-    "question": "What is the capital of France?",
-    "answer": "Paris"
-  },
-  {
-    "question": "What is the largest planet in our solar system?",
-    "answer": "Jupiter"
+    "question": "Which planet is known as the Red Planet?",
+    "answer": "Mars",
+    "difficulty": "easy",
+    "category": "Astronomy",
+    "deck": "Space Science"
   },
   {
     "question": "Who painted the Mona Lisa?",
-    "answer": "Leonardo da Vinci"
+    "answer": "Leonardo da Vinci",
+    "difficulty": "medium",
+    "category": "Art",
+    "deck": "Famous Artists"
   },
   {
     "question": "What is the chemical symbol for Gold?",
-    "answer": "Au"
+    "answer": "Au",
+    "difficulty": "medium",
+    "category": "Chemistry",
+    "deck": "Science Basics"
+  },
+  {
+    "question": "Which gas do plants absorb from the atmosphere?",
+    "answer": "Carbon Dioxide",
+    "difficulty": "easy",
+    "category": "Biology",
+    "deck": "Life Sciences"
+  },
+
+  {
+    "question": "Which city is the capital of Bhutan?",
+    "answer": "Thimphu",
+    "difficulty": "hard",
+    "category": "Capitals",
+    "deck": "World Geography"
+  },
+   {
+    "question": "What is the capital of France?",
+    "answer": "Paris",
+    "difficulty": "easy",
+    "category": "Capitals",
+    "deck": "World Geography"
   }
 ]
